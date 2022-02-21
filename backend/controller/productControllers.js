@@ -1,6 +1,7 @@
 const Product = require("../model/products");
 const ErrorHandler = require("../utils/errorHandler");
 const catchAsyncError = require("../middlewares/catchAsyncError");
+const ApiFeatures = require("../utils/apiFeatures");
 
 // Create new product => /api/vi/product/new
 
@@ -12,15 +13,21 @@ exports.newProduct = catchAsyncError(async (req, res, next) => {
 	});
 });
 // Get all products from the database
-exports.getProducts = async (req, res, next) => {
-	const product = await Product.find();
-	product
-		? res.status(200).json({ success: true, product })
-		: res.status(500).json({
-				success: false,
-				message: "Request could be processed, try again.",
-		  });
-};
+exports.getProducts = catchAsyncError(async (req, res, next) => {
+	const resPerPage = 5;
+	const productCount = await Product.countDocuments();
+	const apiFeatures = new ApiFeatures(Product.find(), req.query)
+		.search()
+		.filter()
+		.pagination(resPerPage);
+	const product = await apiFeatures.query;
+	res.status(200).json({
+		success: true,
+		count: product.length,
+		productCount,
+		product,
+	});
+});
 
 // Get products by id
 exports.getProductsById = catchAsyncError(async (req, res, next) => {

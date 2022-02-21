@@ -23,7 +23,6 @@ const server = app.listen(process.env.PORT, () => {
 	);
 });
 
-console.log(a)
 // Handle Unnandled Promise rejection
 process.on('unhandledRejection', err => {
     console.log(`Error: ${err.message}`);
