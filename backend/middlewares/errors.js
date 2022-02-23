@@ -14,20 +14,39 @@ module.exports = (err, req, res, next) => {
 		});
 	}
 	if (process.env.NODE_ENV === "PRODUCTION") {
-        let error = {...err}
-        // Wrong Mongoose Object ID Error
+		let error = { ...err };
+		// Wrong Mongoose Object ID Error
 
-        error.message = err.message
-        if(err.name === 'castError'){
-            const message = `Resource not found. Invalid: ${err.path}`
-            error = new Error(message, 400)
-        }
+		error.message = err.message;
+		if (err.name === "castError") {
+			const message = `Resource not found. Invalid: ${err.path}`;
+			error = new Error(message, 400);
+		}
 
-        // Handling mongoose validation error
-        if(err.name === 'ValidationError'){
-            const message = Object.values(err.errors).map(value => value.message)
-            error = new ErrorHandler(message, 400)
-        }
+		// Handling mongoose validation error
+		if (err.name === "ValidationError") {
+			const message = Object.values(err.errors).map((value) => value.message);
+			error = new ErrorHandler(message, 400);
+		}
+
+		// Handling Mongoose duplicate vkey error
+
+		if (err.code === 11000) {
+			const message = `Duplicate ${Object.keys(err.keyValue)} entered`;
+			error = new ErrorHandler(message, 400);
+		}
+
+		// handling wrong jwt error
+		if (err.name === "JsonWebTokenError ") {
+			const message = "JSON Web Token is invalid. Try again";
+			error = new ErrorHandler(message, 400);
+		}
+
+		// handling expired jwt error
+		if (err.name === "TokenExpiredError ") {
+			const message = "JSON Web Token is expired. Try again";
+			error = new ErrorHandler(message, 400);
+		}
 
 		res.status(err.statusCode).json({
 			success: false,
