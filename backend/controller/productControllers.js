@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const Product = require("../model/products");
 const ErrorHandler = require("../utils/errorHandler");
 const catchAsyncError = require("../middlewares/catchAsyncError");
@@ -6,7 +7,7 @@ const ApiFeatures = require("../utils/apiFeatures");
 // Create new product => /api/vi/product/new
 
 exports.newProduct = catchAsyncError(async (req, res, next) => {
-	req.body.user = req.user.id
+	req.body.user = req.user.id;
 	const product = await Product.create(req.body);
 	res.status(201).json({
 		success: true,
