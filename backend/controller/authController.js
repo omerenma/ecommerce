@@ -4,6 +4,7 @@ const catchAsyncError = require("..//middlewares/catchAsyncError");
 const sendToken = require("../utils/jwtToken");
 const sendEmail = require("../utils/sendEmail");
 const crypto = require("crypto");
+const { authorizeRoles } = require("../middlewares/auth");
 
 // Register a user => /api/vi/register
 
@@ -137,6 +138,24 @@ exports.updateUserPassword = catchAsyncError(async (req, res, next) => {
 	sendToken(user, 200, res);
 });
 
+// Update user profile => /api/v1/update
+exports.updateUserProfile = catchAsyncError(async (req, res, next) => {
+	const newUserData = {
+		name: req.body.name,
+		email: req.body.email,
+	};
+	// Update avatar: TO DO
+
+	const user = await User.findByIdAndUpdate(req.user.id, newUserData, {
+		new: true,
+		runValidators: true,
+	});
+	res.status(200).json({
+		success: true,
+		user,
+	});
+});
+
 // Logout user
 exports.logout = catchAsyncError(async (req, res, next) => {
 	res.cookie("token", null, {
@@ -148,3 +167,60 @@ exports.logout = catchAsyncError(async (req, res, next) => {
 		message: "Logged out",
 	});
 });
+
+// AdminRoutes
+
+// Get all users = > /api/v1/admin/users
+exports.allUsers = catchAsyncError(async (req, res, next) => {
+	const users = await User.find();
+	res.status(200).json({
+		success: true,
+		users,
+	});
+});
+
+// Get specific user details => /api/v1
+exports.getUserDetails = catchAsyncError(async(req, res,next) => {
+	const user = await User.findById(req.params.id)
+	if(!user){
+		return next(new ErrorHandler(`User not found with this id: ${req.params.id}`, 404))
+	}
+
+	res.status(200).json({
+		success:true,
+		user
+	})
+})
+
+// Admin update user profile => /api/v1/admin/user/:id
+exports.updateUser= catchAsyncError(async (req, res, next) => {
+	const newUserData = {
+		name: req.body.name,
+		email: req.body.email,
+		role:req.body.role
+	};
+
+	const user = await User.findByIdAndUpdate(req.params.id, newUserData, {
+		new: true,
+		runValidators: true,
+	});
+	res.status(200).json({
+		success: true,
+		user,
+	});
+});
+
+// Delete user => /api/v1/admin/user/:id
+exports.deleteUser = catchAsyncError(async(req, res, next) => {
+	const user = await User.findById(req.params.id)
+	if(!user){
+		return next(new ErrorHandler('Not found', 404))
+	}
+	// Remove avatar from cloudinary - TODO
+	await user.remove()
+	res.status(200).json({
+		success:true,
+		user
+	})
+
+})
