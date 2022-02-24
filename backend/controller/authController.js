@@ -105,10 +105,34 @@ exports.resetPassword = catchAsyncError(async (req, res, next) => {
 	}
 
 	// Setup new password
+
 	user.password = req.body.password;
 	user.resetPasswordToken = undefined;
 	user.resetPasswordExpire = undefined;
 
+	await user.save();
+	sendToken(user, 200, res);
+});
+
+// Get currently logged in user details => /api/v1/me
+exports.getUserProfile = catchAsyncError(async (req, res, next) => {
+	const user = await User.findById(req.user.id);
+	res.status(200).json({
+		success: true,
+		user,
+	});
+});
+
+// Update / Change password => /api/v1/password/update
+exports.updateUserPassword = catchAsyncError(async (req, res, next) => {
+	// Get currently logged In user and select the logged in user password
+	const user = await User.findById(req.user.id).select("+password");
+	// Check previous user password
+	const isMatched = await user.comparePassword(req.body.oldPassword);
+	if (!isMatched) {
+		return next(new ErrorHandler("Old password is incorrect", 400));
+	}
+	user.password = req.body.password;
 	await user.save();
 	sendToken(user, 200, res);
 });
