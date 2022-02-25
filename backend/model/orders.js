@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const user = require("./user");
 
 const orderSchema = mongoose.Schema({
-	shipingInfo: {
+	shippingInfo: {
 		address: {
 			type: String,
 			required: true,
@@ -41,7 +41,7 @@ const orderSchema = mongoose.Schema({
 			},
 			image: {
 				type: String,
-				required: true,
+				// required: true,
 			},
 			price: {
 				type: Number,
