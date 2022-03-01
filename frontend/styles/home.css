@@ -1,0 +1,23 @@
+.card{
+    
+
+}
+.btn{
+    background-color: orange;
+    width: 96%;
+    margin-bottom: 2px;;
+    align-self: center;
+    border: none;
+}
+.btn:hover{
+    background-color: yellowgreen;
+}
+.product_image{
+    width: 150px;
+    margin:0 auto;
+  
+}
+.mac{
+    width: 200px;
+    padding-top: 10px;
+}

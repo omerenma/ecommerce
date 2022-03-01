@@ -1,0 +1,38 @@
+
+.navbar{
+    width: 100%;
+    background-color: black;
+    
+}
+
+.container{
+    background-color: transparent;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.nav-collapse{
+    display: flex;
+    flex: 1;
+    justify-content: space-around;
+}
+.form{
+    flex:0.7;
+}
+.nav_link{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    gap: 5px;
+}
+.nav_link > .nav-link:nth-child(1){
+    background-color: white;
+    /* color:white;
+    border: none; */
+}
+.nav_link > .nav-link:nth-child(2){
+    background-color: transparent;
+    color:white;
+    border: none;
+}
