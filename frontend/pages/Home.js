@@ -4,25 +4,22 @@ import { Card, Button, Container } from "react-bootstrap";
 import { IconName, FaStar } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import { dataSlice, request } from "../redux/count";
-import { addUser } from "../redux/userSlice";
-import { getJSONData } from "../redux/apiCalls";
+import { getProducts } from "../redux/getProductsSlice";
 
 function Home() {
 	const dispatch = useDispatch();
-	const { loading, data } = useSelector((state) => state.data);
-	const datas = useSelector((state) => state.user.data);
-	const [post, setPost] = useState("");
+	const products = useSelector((state) => state.products);
 
-	// useEffect(() => {
-	// 	dispatch(getJSONData())
-	// }, []);
+	useEffect(() => {
+		dispatch(getProducts());
+	}, []);
 
-	if (loading) {
-		return <p>Loading...</p>;
-	}
 	const handleUpdate = () => {
-		dispatch(getJSONData);
+		// dispatch(getJSONData);
 	};
+	if (products.data.product === undefined) {
+		return <p style={{ textAlign: "center" }}>Loading.......</p>;
+	}
 
 	return (
 		<Container fluid>
@@ -36,102 +33,32 @@ function Home() {
 				}}
 			>
 				<MetaData title={"Buy Best Products Online"} />
-				<Card style={{ width: "18rem", height: "auto" }}>
-					<Card.Img
-						variant="top"
-						src="../images/camera.jpg"
-						className="product_image"
-					/>
-					<Card.Body>
-						<Card.Title>Niko Camera</Card.Title>
-						<Card.Text>
-							Some quick example text to build on the card title and make up the
-							bulk of the card's content.
-						</Card.Text>
-						<FaStar color="orange" />
-						<FaStar color="orange" />
-						<FaStar color="orange" />
-						<FaStar color="orange" />
-						<FaStar color="orange" />
-						<Card.Text>N500,000.00</Card.Text>
-					</Card.Body>
 
-					<Button className="btn" href="#" onClick={handleUpdate}>
-						View Details
-					</Button>
-				</Card>
-				<Card style={{ width: "18rem" }}>
-					<Card.Img
-						variant="top"
-						src="../images/mac2.jpeg"
-						className="product_image mac"
-					/>
-					<Card.Body>
-						<Card.Title>Macbook pro</Card.Title>
-						<Card.Text>
-							Some quick example text to build on the card title and make up the
-							bulk of the card's content.
-						</Card.Text>
-						<FaStar color="orange" />
-						<FaStar color="orange" />
-						<FaStar color="orange" />
-						<FaStar color="orange" />
-						<FaStar color="orange" />
-						<Card.Text>N500,000.00</Card.Text>
-					</Card.Body>
+				{products.data.product.map((product, id) => (
+					<Card style={{ width: "18rem", height: "auto" }}>
+						<Card.Img
+							variant="top"
+							src="../images/camera.jpg"
+							className="product_image"
+						/>
+						<Card.Body>
+							<Card.Title>{product.name}</Card.Title>
+							<Card.Text>{product.description}</Card.Text>
+							<FaStar color="orange">{product.rating}</FaStar>
+							<FaStar color="orange">{product.rating}</FaStar>
+							<FaStar color="orange">{product.rating}</FaStar>
+							<FaStar color="orange">{product.rating}</FaStar>
+							<FaStar color="orange">{product.rating}</FaStar>
 
-					<Button className="btn" href="#">
-						View Details
-					</Button>
-				</Card>
-				<Card style={{ width: "18rem" }}>
-					<Card.Img
-						variant="top"
-						src="../images/camera.jpg"
-						className="product_image"
-					/>
-					<Card.Body>
-						<Card.Title>Niko Camera</Card.Title>
-						<Card.Text>
-							Some quick example text to build on the card title and make up the
-							bulk of the card's content.
-						</Card.Text>
-						<FaStar color="orange" />
-						<FaStar color="orange" />
-						<FaStar color="orange" />
-						<FaStar color="orange" />
-						<FaStar color="orange" />
-						<Card.Text>N500,000.00</Card.Text>
-					</Card.Body>
+							<Card.Text>{product.price}</Card.Text>
+							<Card.Text> Stock: {product.stock}</Card.Text>
+						</Card.Body>
 
-					<Button className="btn" href="#">
-						View Details
-					</Button>
-				</Card>
-
-				<Card style={{ width: "18rem" }}>
-					<Card.Img
-						variant="top"
-						src="../images/camera.jpg"
-						className="product_image"
-					/>
-					<Card.Body>
-						<Card.Title>Niko Camera</Card.Title>
-						<Card.Text>
-							Some quick example text to build on the card title and make up the
-							bulk of the card's content.
-						</Card.Text>
-						<FaStar color="orange" />
-						<FaStar color="orange" />
-						<FaStar color="orange" />
-						<FaStar color="orange" />
-						<FaStar color="orange" />
-						<Card.Text>N500,000.00</Card.Text>
-					</Card.Body>
-					<Button className="btn" href="#">
-						View Details
-					</Button>
-				</Card>
+						<Button className="btn" href="#" onClick={handleUpdate}>
+							View Details
+						</Button>
+					</Card>
+				))}
 			</div>
 		</Container>
 	);

@@ -1,10 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 import data from "./count";
-import user from './userSlice'
+import products from "./getProductsSlice";
 
 export default configureStore({
 	reducer: {
 		data,
-        user
+		products,
 	},
 });
