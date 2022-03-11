@@ -11,7 +11,7 @@ const productSchema = new Schema({
 	price: {
 		type: Number,
 		required: [true, "Please enter product price"],
-		maxlength: [5, "Product proce cannot exceed 5 character"],
+		maxlength: [15, "Product proce cannot exceed 5 character"],
 		default: 0.0,
 	},
 	description: {

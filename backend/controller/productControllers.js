@@ -16,17 +16,19 @@ exports.newProduct = catchAsyncError(async (req, res, next) => {
 });
 // Get all products from the database
 exports.getProducts = catchAsyncError(async (req, res, next) => {
-	const resPerPage = 5;
+	const resPerPage = 4;
 	const productCount = await Product.countDocuments();
 	const apiFeatures = new ApiFeatures(Product.find(), req.query)
 		.search()
 		.filter()
 		.pagination(resPerPage);
 	const product = await apiFeatures.query;
+
 	res.status(200).json({
 		success: true,
 		count: product.length,
 		productCount,
+		resPerPage,
 		product,
 	});
 });
@@ -83,7 +85,13 @@ exports.createProductReview = catchAsyncError(async (req, res, next) => {
 		rating: Number(rating),
 		comment,
 	};
+
+	// Check if this user has reviewed this product before
+
+	// If true then update the prvious review with the current review
+	// If not then add the review to the  db
 	const product = await Product.findById(productId);
+
 	const isReviewed = product.reviews.find(
 		(r) => r.user.toString() === req.user._id.toString()
 	);
@@ -98,6 +106,7 @@ exports.createProductReview = catchAsyncError(async (req, res, next) => {
 		product.reviews.push(review);
 		product.numOfReviews = product.reviews.length;
 	}
+	// Calculate the rating
 	product.ratings =
 		product.reviews.reduce((acc, item) => item.rating + acc, 0) /
 		product.reviews.length;
@@ -125,20 +134,24 @@ exports.deleteReview = catchAsyncError(async (req, res, next) => {
 		(review) => review._id.toString() !== req.query.id.toString()
 	);
 
-		const numOfReviews = reviews.length
+	const numOfReviews = reviews.length;
 	const ratings =
 		product.reviews.reduce((acc, item) => item.rating + acc, 0) /
 		reviews.length;
 
-		await Product.findByIdAndUpdate(req.query.productId, {
+	await Product.findByIdAndUpdate(
+		req.query.productId,
+		{
 			reviews,
 			ratings,
-			numOfReviews
-		}, {
-			new:true,
-			runValidators:true,
-			userFindAndModify:false
-		})
+			numOfReviews,
+		},
+		{
+			new: true,
+			runValidators: true,
+			userFindAndModify: false,
+		}
+	);
 	res.status(200).json({
 		success: true,
 	});
