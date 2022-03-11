@@ -1,4 +1,5 @@
 import React from "react";
+import link from "next/link";
 import {
 	Navbar,
 	Nav,
@@ -16,7 +17,10 @@ const Navs = () => {
 		<>
 			<Navbar className="navbar" expand="lg">
 				<Container className="container">
-					<Image src="../images/logo.png" />
+					<a href="/">
+						<Image src="../images/logo.png" />
+					</a>
+
 					<Navbar.Toggle aria-controls="navbarScroll" />
 					<Navbar.Collapse id="navbarScroll" className="nav-collapse">
 						<Form className="form">

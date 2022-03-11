@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import Link from "next/link";
-
+import Layout from "./layout";
+import Landing from "./Home";
 export default function Home() {
 	return (
 		<div className={styles.container}>
@@ -27,7 +28,9 @@ export default function Home() {
 				/>
 			</Head>
 
-			{/* <main>Hello Next.js</main> */}
+			<main>
+				<Landing />
+			</main>
 			<script
 				src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
 				integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"

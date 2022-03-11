@@ -1,66 +1,55 @@
 import React, { useState, useEffect } from "react";
+import { Grid, Typography } from "@mui/material";
 import MetaData from "./MetaData";
-import { Card, Button, Container } from "react-bootstrap";
-import { IconName, FaStar } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
-import { dataSlice, request } from "../redux/count";
+import Loader from "react-loader-spinner";
 import { getProducts } from "../redux/getProductsSlice";
-
+import Products from "./Products";
+import { useAlert } from "react-alert";
 function Home() {
+	const alert = useAlert();
 	const dispatch = useDispatch();
-	const products = useSelector((state) => state.products);
+	const { loading, success, error, data } = useSelector(
+		(state) => state.products
+	);
 
 	useEffect(() => {
 		dispatch(getProducts());
-	}, []);
+		if (success) {
+			alert.success("Success");
+		}
+		if (error) {
+			alert.error(error);
+		}
+	}, [dispatch, success, error]);
 
 	const handleUpdate = () => {
 		// dispatch(getJSONData);
 	};
-	if (products.data.product === undefined) {
-		return <p style={{ textAlign: "center" }}>Loading.......</p>;
+	if (loading === true) {
+		return <h1 style={{ textAlign: "center" }}>Loading...</h1>;
 	}
+	// if (products.data.product === undefined) {
+	// 	return "Loading"
+	// }
 
 	return (
-		<Container fluid>
-			<h1 style={{ marginLeft: 23 }}>Latest products</h1>
-			<div
-				style={{
-					display: "flex",
-					justifyContent: "center",
-					columnGap: "10px",
-					paddingTop: 10,
-				}}
-			>
+		<div>
+			<Typography mt={3} style={{ textAlign: "center" }}>
+				Latest products
+			</Typography>
+			<Grid container spacing={1} justifyContent="center">
 				<MetaData title={"Buy Best Products Online"} />
 
-				{products.data.product.map((product, id) => (
-					<Card style={{ width: "18rem", height: "auto" }}>
-						<Card.Img
-							variant="top"
-							src="../images/camera.jpg"
-							className="product_image"
-						/>
-						<Card.Body>
-							<Card.Title>{product.name}</Card.Title>
-							<Card.Text>{product.description}</Card.Text>
-							<FaStar color="orange">{product.rating}</FaStar>
-							<FaStar color="orange">{product.rating}</FaStar>
-							<FaStar color="orange">{product.rating}</FaStar>
-							<FaStar color="orange">{product.rating}</FaStar>
-							<FaStar color="orange">{product.rating}</FaStar>
-
-							<Card.Text>{product.price}</Card.Text>
-							<Card.Text> Stock: {product.stock}</Card.Text>
-						</Card.Body>
-
-						<Button className="btn" href="#" onClick={handleUpdate}>
-							View Details
-						</Button>
-					</Card>
-				))}
-			</div>
-		</Container>
+				{data.product === undefined
+					? null
+					: data.product.map((product) => (
+							<Grid item key={product._id} mt={5}>
+								<Products product={product} key={product._id} />
+							</Grid>
+					  ))}
+			</Grid>
+		</div>
 	);
 }
 

@@ -114,3 +114,12 @@
     flex-direction: column;
   }
 }
+.btn{
+  background-color: orange;
+  width: 96%;
+  margin-bottom: 2px;;
+  align-self: center;
+  border: none;
+  text-align: center;
+  padding: 20;
+}
