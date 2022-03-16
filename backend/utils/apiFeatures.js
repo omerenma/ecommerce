@@ -5,12 +5,7 @@ class APIFeatures {
 	}
 	search() {
 		const keyword = this.queryStr.keyword
-			? {
-					name: {
-						$regex: this.queryStr.keyword,
-						$options: "i",
-					},
-			  }
+			? { name: { $regex: this.queryStr.keyword, $options: "i" } }
 			: {};
 		this.query = this.query.find({ ...keyword });
 		return this;
@@ -35,8 +30,8 @@ class APIFeatures {
 		const currentPage = Number(this.queryStr.page) || 1;
 		const skip = resPerPage * (currentPage - 1);
 
-        this.query = this.query.limit(resPerPage).skip(skip)
-        return this
+		this.query = this.query.limit(resPerPage).skip(skip);
+		return this;
 	}
 }
 module.exports = APIFeatures;

@@ -16,21 +16,49 @@ exports.newProduct = catchAsyncError(async (req, res, next) => {
 });
 // Get all products from the database
 exports.getProducts = catchAsyncError(async (req, res, next) => {
-	const resPerPage = 4;
+	const page = req.query.page;
+	const limit = req.query.limit;
+	const rowsPerPage = 4;
 	const productCount = await Product.countDocuments();
-	const apiFeatures = new ApiFeatures(Product.find(), req.query)
-		.search()
-		.filter()
-		.pagination(resPerPage);
-	const product = await apiFeatures.query;
+	const startPosition = (page - 1) * limit;
+	const endPosition = page * limit;
 
+	const result = {};
+	if (endPosition < (await Product.countDocuments().exec())) {
+		result.next = {
+			page: page + 1,
+			limit: limit,
+		};
+	}
+	if (startPosition > 0) {
+		result.previous = {
+			page: page - 1,
+			limit: limit,
+		};
+	}
+	result.results = await Product.find().limit(limit).skip(startPosition);
 	res.status(200).json({
 		success: true,
-		count: product.length,
+		count: Product.length,
 		productCount,
-		resPerPage,
-		product,
+		rowsPerPage,
+		product: result.results,
 	});
+	// const rowsPerPage = 4;
+	// const productCount = await Product.countDocuments();
+	// const apiFeatures = new ApiFeatures(Product.find(), req.query)
+	// 	.search()
+	// 	.filter()
+	// 	.pagination(rowsPerPage);
+	// const product = await apiFeatures.query;
+
+	// res.status(200).json({
+	// 	success: true,
+	// 	count: product.length,
+	// 	productCount,
+	// 	rowsPerPage,
+	// 	product,
+	// });
 });
 
 // Get products by id
