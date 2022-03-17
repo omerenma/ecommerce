@@ -1,18 +1,18 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-export const getProducts = createAsyncThunk(
-	"get/product",
-	async (currentPage) => {
-		console.log(currentPage, "current page");
+export const SearchProducts = createAsyncThunk(
+	"search/product",
+	async (keyword) => {
+		console.log(keyword, "word");
 		const res = await axios.get(
-			`http://localhost:5000/api/v1/product?&page=${currentPage}&limit=4`
+			`http://localhost:5000/api/v1/search/${keyword}`
 		);
 		return res.data;
 	}
 );
 
-export const getProductSlice = createSlice({
-	name: "user",
+export const searchProductSlice = createSlice({
+	name: "search",
 	initialState: {
 		loading: false,
 		success: false,
@@ -22,16 +22,16 @@ export const getProductSlice = createSlice({
 	},
 	reducers: {},
 	extraReducers: {
-		[getProducts.pending]: (state) => {
+		[SearchProducts.pending]: (state) => {
 			state.loading = true;
 		},
-		[getProducts.fulfilled]: (state, action) => {
+		[SearchProducts.fulfilled]: (state, action) => {
 			state.loading = false;
 			state.success = true;
 			state.data = action.payload;
 			state.rowsPerPage = action.payload.rowsPerPage;
 		},
-		[getProducts.rejected]: (state) => {
+		[SearchProducts.rejected]: (state) => {
 			state.loading = false;
 			state.success = false;
 			state.error = true;
@@ -40,4 +40,4 @@ export const getProductSlice = createSlice({
 });
 
 // export const { getProducts } = userSlice.actions;
-export default getProductSlice.reducer;
+export default searchProductSlice.reducer;

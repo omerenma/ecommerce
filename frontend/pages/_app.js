@@ -1,9 +1,11 @@
+import React from "react";
 import { Provider } from "react-redux";
 import store from "../redux/store";
 import "../styles/globals.css";
 import nav from "../styles/nav.css";
 import footer from "../styles/footer.css";
 import home from "../styles/home.css";
+
 import "../styles/design.css";
 
 import { positions, transitions, Provider as AlertProvider } from "react-alert";

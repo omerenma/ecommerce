@@ -1,18 +1,20 @@
 import React from "react";
-import link from "next/link";
+import { useRouter, withRouter } from "next/router";
 import {
 	Navbar,
 	Nav,
-	NavDropdown,
-	Container,
 	Form,
 	FormControl,
 	Button,
 	Image,
+	Container,
 } from "react-bootstrap";
-//import {InputGroup, InputGroupText, Input} from 'reactstrap'
+import Search from "./Search";
 
-const Navs = () => {
+const Navs = (props) => {
+	const keyword = props.router.query.Home;
+
+	console.log(keyword, "keyword from nav");
 	return (
 		<>
 			<Navbar className="navbar" expand="lg">
@@ -23,15 +25,8 @@ const Navs = () => {
 
 					<Navbar.Toggle aria-controls="navbarScroll" />
 					<Navbar.Collapse id="navbarScroll" className="nav-collapse">
-						<Form className="form">
-							<FormControl
-								type="search"
-								placeholder="Search products"
-								className="search_field"
-								aria-label="Search"
-								id="search_field"
-							/>
-						</Form>
+						<Search route={props}  />
+
 						<Nav
 							className="me-auto my-2 my-lg-0"
 							style={{ maxHeight: "100px" }}
@@ -53,4 +48,4 @@ const Navs = () => {
 	);
 };
 
-export default Navs;
+export default withRouter(Navs);

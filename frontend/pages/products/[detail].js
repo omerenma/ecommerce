@@ -4,7 +4,7 @@ import Loader from "react-loader-spinner";
 import { useAlert } from "react-alert";
 import { Carousel } from "react-bootstrap";
 
-import { Ratings, StarRating } from "../Products";
+import { Ratings } from "../Products";
 import { getProductDetails } from "../../redux/getProductDetailsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
