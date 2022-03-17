@@ -9,12 +9,14 @@ const {
 	deleteProduct,
 	createProductReview,
 	getProductReviews,
-	deleteReview
+	deleteReview,
+	searchProduct,
 } = require("../controller/productControllers");
 
 const { isAuthenticatedUser, authorizeRoles } = require("../middlewares/auth");
 
 router.route("/product").get(getProducts);
+router.route("/search/:key").get(searchProduct);
 router.route("/product/:id").get(getProductsById);
 router.route("/admin/product/new").post(isAuthenticatedUser, newProduct);
 router

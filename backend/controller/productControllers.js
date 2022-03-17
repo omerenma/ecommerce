@@ -44,6 +44,7 @@ exports.getProducts = catchAsyncError(async (req, res, next) => {
 		rowsPerPage,
 		product: result.results,
 	});
+
 	// const rowsPerPage = 4;
 	// const productCount = await Product.countDocuments();
 	// const apiFeatures = new ApiFeatures(Product.find(), req.query)
@@ -183,4 +184,14 @@ exports.deleteReview = catchAsyncError(async (req, res, next) => {
 	res.status(200).json({
 		success: true,
 	});
+});
+
+// Search product route
+exports.searchProduct = catchAsyncError(async (req, res, next) => {
+	const keyword = req.params.key;
+	const resToLowerCase = keyword.toLowerCase();
+	const searchResult = await Product.find({
+		$or: [{ name: { $regex: keyword } }],
+	});
+	res.json(searchResult);
 });
