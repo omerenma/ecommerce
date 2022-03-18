@@ -1,17 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, FormControl } from "react-bootstrap";
 import { withRouter } from "next/router";
 import { SearchProducts } from "../redux/search";
+import { getProducts } from "../redux/getProductsSlice";
 
 const Search = ({ route, params }) => {
 	const [keyword, setKeyword] = useState("");
+	const [currentPage, setCurrentPage] = useState(1);
 	const dispatch = useDispatch();
+
+	const { loading, success, error, data, rowsPerPage, productCount, count } =
+		useSelector((state) => state.products);
 
 	const searchHandler = (e) => {
 		e.preventDefault();
 		if (keyword.trim()) {
-			dispatch(SearchProducts(keyword));
+			dispatch(getProducts(keyword, currentPage));
 		} else {
 			route.push("/");
 		}

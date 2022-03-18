@@ -3,9 +3,10 @@ import axios from "axios";
 export const SearchProducts = createAsyncThunk(
 	"search/product",
 	async (keyword) => {
-		console.log(keyword, "word");
+		const currentPage = 1;
+		console.log(keyword, "word", currentPage, "page current");
 		const res = await axios.get(
-			`http://localhost:5000/api/v1/search/${keyword}`
+			`http://localhost:5000/api/v1/product?keyword=${keyword}&page=${currentPage}&limit=2`
 		);
 		return res.data;
 	}

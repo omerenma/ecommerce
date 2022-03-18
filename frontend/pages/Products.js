@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/router";
 //import { Link } from "react-router-dom";
 import { StarBorderOutlined } from "@mui/icons-material";
@@ -43,19 +44,19 @@ const Products = ({ product }) => {
 	};
 	return (
 		<Card style={{ width: 200 }}>
-			<Card.Img
+			{/* <Card.Img
 				variant="top"
 				src="../images/camera.jpg"
 				style={{ width: "100px", height: 100 }}
-			/>
-			<Card.Body>
+			/> */}
+			<Card.Body style={{ margin: "0 auto", padding: 0 }}>
 				<Card.Link href={`/product`}>{product.name}</Card.Link>
-				<Card.Text>{product.description}</Card.Text>
+				<p>{product.description}</p>
 
 				<Ratings />
-				<Card.Text>{product.numOfReview} Review(s)</Card.Text>
-				<Card.Text>N {product.price}</Card.Text>
-				<Card.Text> Stock: {product.stock}</Card.Text>
+				<p>{product.numOfReview} Review(s)</p>
+				<p>N {product.price}</p>
+				<p> Stock: {product.stock}</p>
 			</Card.Body>
 
 			<Link className={style.btn} href={`/products/${product._id}`}>

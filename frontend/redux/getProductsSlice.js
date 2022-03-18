@@ -2,10 +2,10 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 export const getProducts = createAsyncThunk(
 	"get/product",
-	async (currentPage) => {
-		console.log(currentPage, "current page");
+	async (keyword, currentPage = 1) => {
+		//const link = 'http://localhost:5000/api/v1/product?page=${currentPage}&keyword=${keyword}'
 		const res = await axios.get(
-			`http://localhost:5000/api/v1/product?&page=${currentPage}&limit=4`
+			`http://localhost:5000/api/v1/product?page=${currentPage}&keyword=${keyword}`
 		);
 		return res.data;
 	}
