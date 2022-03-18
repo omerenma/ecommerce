@@ -5,11 +5,13 @@ class APIFeatures {
 	}
 	search() {
 		const keyword = this.queryStr.keyword
-			? { name: { $regex: this.queryStr.keyword, $options: "i" } }
+			? { name: { $regex: this.queryStr.keyword, $options: "i" }}
 			: {};
 		this.query = this.query.find({ ...keyword });
 		return this;
 	}
+	
+
 	filter() {
 		const queryCopy = { ...this.queryStr };
 		// Removing fields from the query
@@ -26,11 +28,11 @@ class APIFeatures {
 		this.query = this.query.find(JSON.parse(queryStr));
 		return this;
 	}
-	pagination(resPerPage) {
+	pagination(rowsPerPage) {
 		const currentPage = Number(this.queryStr.page) || 1;
-		const skip = resPerPage * (currentPage - 1);
+		const skip = rowsPerPage * (currentPage - 1);
 
-		this.query = this.query.limit(resPerPage).skip(skip);
+		this.query = this.query.limit(rowsPerPage).skip(skip);
 		return this;
 	}
 }

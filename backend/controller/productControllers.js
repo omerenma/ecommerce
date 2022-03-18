@@ -16,50 +16,60 @@ exports.newProduct = catchAsyncError(async (req, res, next) => {
 });
 // Get all products from the database
 exports.getProducts = catchAsyncError(async (req, res, next) => {
-	const page = req.query.page;
-	const limit = req.query.limit;
-	const rowsPerPage = 4;
-	const productCount = await Product.countDocuments();
-	const startPosition = (page - 1) * limit;
-	const endPosition = page * limit;
-
-	const result = {};
-	if (endPosition < (await Product.countDocuments().exec())) {
-		result.next = {
-			page: page + 1,
-			limit: limit,
-		};
-	}
-	if (startPosition > 0) {
-		result.previous = {
-			page: page - 1,
-			limit: limit,
-		};
-	}
-	result.results = await Product.find().limit(limit).skip(startPosition);
-	res.status(200).json({
-		success: true,
-		count: Product.length,
-		productCount,
-		rowsPerPage,
-		product: result.results,
-	});
+	//My own code
+	// const page = req.query.page;
+	// const limit = req.query.limit;
 
 	// const rowsPerPage = 4;
 	// const productCount = await Product.countDocuments();
-	// const apiFeatures = new ApiFeatures(Product.find(), req.query)
-	// 	.search()
-	// 	.filter()
-	// 	.pagination(rowsPerPage);
-	// const product = await apiFeatures.query;
+	// const startPosition = (page - 1) * limit;
+	// const endPosition = page * limit;
+
+	// const result = {};
+	// if (endPosition < (await Product.countDocuments().exec())) {
+	// 	result.next = {
+	// 		page: page + 1,
+	// 		limit: limit,
+	// 	};
+	// }
+	// if (startPosition > 0) {
+	// 	result.previous = {
+	// 		page: page - 1,
+	// 		limit: limit,
+	// 	};
+	// }
+	// result.results = await Product.find().limit(limit).skip(startPosition);
+
+	// Search
+	// const searchResult = await Product.find({
+	// 	$or: [{ name: { $regex: search } }],
+	// });
 
 	// res.status(200).json({
 	// 	success: true,
-	// 	count: product.length,
+	// 	count: Product.length,
 	// 	productCount,
 	// 	rowsPerPage,
-	// 	product,
+	// 	product: result.results,
+	// 	searchResult,
+	// 	search,
 	// });
+
+	const rowsPerPage = 5;
+	const productCount = await Product.countDocuments();
+	const apiFeatures = new ApiFeatures(Product.find(), req.query)
+		.search()
+		.filter()
+		.pagination(rowsPerPage);
+	const product = await apiFeatures.query;
+
+	res.status(200).json({
+		success: true,
+		count: product.length,
+		productCount,
+		rowsPerPage,
+		product,
+	});
 });
 
 // Get products by id
@@ -189,7 +199,6 @@ exports.deleteReview = catchAsyncError(async (req, res, next) => {
 // Search product route
 exports.searchProduct = catchAsyncError(async (req, res, next) => {
 	const keyword = req.params.key;
-	const resToLowerCase = keyword.toLowerCase();
 	const searchResult = await Product.find({
 		$or: [{ name: { $regex: keyword } }],
 	});
