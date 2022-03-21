@@ -12,9 +12,12 @@ import {
 } from "@mui/icons-material";
 
 export const Buttons = styled.button`
-	min-width: 292px;
+	min-width: 100px;
 	border-radius: 2px;
 	cursor: pointer;
+	&:focus {
+		outline: none;
+	}
 	background: ${(props) =>
 		props.submit
 			? "orange"
@@ -29,7 +32,7 @@ export const Buttons = styled.button`
 			: props.delete
 			? "white"
 			: props.cancel
-			? "red"
+			? "orange"
 			: null};
 	border: ${(props) =>
 		props.submit
@@ -37,7 +40,7 @@ export const Buttons = styled.button`
 			: props.delete
 			? "none"
 			: props.cancel
-			? "1px solid red"
+			? "1px solid orange"
 			: null};
 `;
 
@@ -56,7 +59,13 @@ export const TextFields = styled.input`
 
 export const ErrorField = styled(Input)``;
 
-export const TextFieldWithIcon = ({ type, color, value, onChange, placeholder }) => {
+export const TextFieldWithIcon = ({
+	type,
+	color,
+	value,
+	onChange,
+	placeholder,
+}) => {
 	console.log(onChange, "change");
 	const [values, setValues] = React.useState({
 		email: "",
@@ -91,7 +100,7 @@ export const TextFieldWithIcon = ({ type, color, value, onChange, placeholder })
 					disableUnderline={true}
 					type={values.showPassword ? "text" : "password"}
 					value={values.password}
-                    placeholder="Password"
+					placeholder="Password"
 					endAdornment={
 						<InputAdornment position="end" style={{ background: "#662D9133" }}>
 							<IconButton
@@ -163,7 +172,7 @@ export const TextFieldWithIcon = ({ type, color, value, onChange, placeholder })
 						width: "292px",
 						height: " 35px",
 					}}
-                    placeholder="Email"
+					placeholder="Email"
 					disableUnderline={true}
 					type="text"
 					value={values.email}
