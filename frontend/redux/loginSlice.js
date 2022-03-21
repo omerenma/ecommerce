@@ -3,8 +3,12 @@ import axios from "axios";
 
 export const loginAction = createAsyncThunk("login/user", async (data) => {
 	const res = await axios.post("http:5000/api/v1/auth/login", {
+		Headers: {
+			"Content-Type": "application/json",
+		},
 		data: JSON.stringify(data),
 	});
+	return res.data;
 });
 
 const loginSlice = createSlice({

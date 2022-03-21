@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { useRouter, withRouter } from "next/router";
+import { Popover } from "@mui/material";
 import {
 	Navbar,
 	Nav,
@@ -10,11 +11,17 @@ import {
 	Container,
 } from "react-bootstrap";
 import Search from "./Search";
+import Login from "./Login";
 
 const Navs = (props) => {
+	const [open, setOpen] = useState(false);
+	const [editOpen, setEditOpen] = useState(false);
 	const keyword = props.router.query.Home;
 
-	console.log(keyword, "keyword from nav");
+	const handleOpen = () => {
+		setOpen(true);
+	};
+
 	return (
 		<>
 			<Navbar className="navbar" expand="lg">
@@ -25,7 +32,7 @@ const Navs = (props) => {
 
 					<Navbar.Toggle aria-controls="navbarScroll" />
 					<Navbar.Collapse id="navbarScroll" className="nav-collapse">
-						<Search route={props}  />
+						<Search route={props} />
 
 						<Nav
 							className="me-auto my-2 my-lg-0"
@@ -33,7 +40,13 @@ const Navs = (props) => {
 							navbarScroll
 						>
 							<Nav.Link className="nav_link">
-								<Button href="#action1" className="nav-link">
+								<Button
+									href="#action1"
+									className="nav-link"
+									// aria-describedby={id}
+									type="button"
+									onClick={handleOpen}
+								>
 									Login
 								</Button>
 								<Button href="#action2" className="nav-link">
@@ -44,6 +57,19 @@ const Navs = (props) => {
 					</Navbar.Collapse>
 				</Container>
 			</Navbar>
+			<Popover
+				anchorOrigin={{
+					vertical: "top",
+					horizontal: "center",
+				}}
+				transformOrigin={{
+					vertical: "center",
+					horizontal: "center",
+				}}
+				open={open}
+			>
+				<Login />
+			</Popover>
 		</>
 	);
 };

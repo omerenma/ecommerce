@@ -3,7 +3,6 @@ import axios from "axios";
 export const getProducts = createAsyncThunk(
 	"get/product",
 	async (keyword, currentPage = 1) => {
-		//const link = 'http://localhost:5000/api/v1/product?page=${currentPage}&keyword=${keyword}'
 		const res = await axios.get(
 			`http://localhost:5000/api/v1/product?page=${currentPage}&keyword=${keyword}`
 		);

@@ -3,6 +3,7 @@ import data from "./count";
 import products from "./getProductsSlice";
 import getProductDetailsSlice from "./getProductDetailsSlice";
 import searchProductSlice from "./search";
+import login from "./loginSlice";
 
 export default configureStore({
 	reducer: {
@@ -10,5 +11,6 @@ export default configureStore({
 		products,
 		getProductDetailsSlice,
 		searchProductSlice,
+		login,
 	},
 });
