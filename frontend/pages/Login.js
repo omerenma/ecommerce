@@ -3,7 +3,7 @@ import Link from "next/link";
 import { TextFieldWithIcon, Buttons } from "../components/index";
 import { Typography } from "@mui/material";
 
-function Login({ onChange, handleClose }) {
+function Login(props) {
 	return (
 		<>
 			<span style={{ position: "relative", left: 7, top: 10 }}>Login</span>
@@ -19,12 +19,7 @@ function Login({ onChange, handleClose }) {
 					padding: "0 20px",
 				}}
 			>
-				<TextFieldWithIcon
-					type="email"
-					color="orange"
-					// value={email}
-					onChange={(e) => e.target}
-				/>
+				<TextFieldWithIcon color="orange" type="email" />
 				<TextFieldWithIcon type="password" />
 				<div style={{ position: "relative", left: 85, fontSize: "10px" }}>
 					<Link href="/forgot-password">
@@ -39,7 +34,7 @@ function Login({ onChange, handleClose }) {
 						position: "relative",
 					}}
 				>
-					<Buttons cancel onClick={() => handleClose()}>
+					<Buttons cancel onClick={() => props.handleClose()}>
 						Cancel
 					</Buttons>
 					<Buttons submit>Submit</Buttons>

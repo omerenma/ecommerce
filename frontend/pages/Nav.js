@@ -15,8 +15,6 @@ import Login from "./Login";
 
 const Navs = (props) => {
 	const [open, setOpen] = useState(false);
-	const [editOpen, setEditOpen] = useState(false);
-	const keyword = props.router.query.Home;
 
 	const handleOpen = () => {
 		setOpen(true);

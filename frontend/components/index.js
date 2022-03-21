@@ -66,14 +66,16 @@ export const TextFieldWithIcon = ({
 	onChange,
 	placeholder,
 }) => {
-	console.log(onChange, "change");
 	const [values, setValues] = React.useState({
 		email: "",
 		password: "",
 		showPassword: false,
 	});
-	const handleChange = (onChange) => (event) => {
-		setValues({ ...values, [onchange]: event.target.value });
+
+	const [email, setEmail] = useState('')
+	const [password, setPassword] = useState('')
+	const handleChange = (props) => (event) => {
+		setValues({ ...values, [props]: event.target.value });
 	};
 
 	const handleClickShowPassword = () => {
@@ -99,8 +101,9 @@ export const TextFieldWithIcon = ({
 					}}
 					disableUnderline={true}
 					type={values.showPassword ? "text" : "password"}
-					value={values.password}
+					value={password}
 					placeholder="Password"
+					onChange={e => setPassword(e.target.password)}
 					endAdornment={
 						<InputAdornment position="end" style={{ background: "#662D9133" }}>
 							<IconButton
@@ -174,9 +177,9 @@ export const TextFieldWithIcon = ({
 					}}
 					placeholder="Email"
 					disableUnderline={true}
-					type="text"
-					value={values.email}
-					onChange={handleChange}
+					type="email"
+					value={email}
+					onChange={(e) => setEmail(e.target.value)}
 					startAdornment={<EmailSharp style={{ color: color }} />}
 				/>
 			) : (
