@@ -55,7 +55,20 @@ const Home = () => {
 	// };
 
 	if (loading === true) {
-		return <h1 style={{ textAlign: "center" }}>Loading...</h1>;
+		return (
+			<span
+				style={{
+					display: "flex",
+					justifyContent: "center",
+					alignItems: "center",
+					position:'absolute',
+					left:'50%',
+					top:'50%'
+				}}
+			>
+				<Loader type="Circles" height={30} width={30} color="orange" />
+			</span>
+		);
 	}
 
 	return (
@@ -66,12 +79,15 @@ const Home = () => {
 			</Typography>
 			<Grid
 				container
-				 spacing={0.5}
-				 justifyContent="center"
-				 
+				spacing={0.5}
+				justifyContent="center"
 				mt={1}
 				p={3}
-				style={{borderRadius: 5 , background:"#fff", boxShadow: "5px 5px 15px 5px rgba(0,0,0,0.10)"}}
+				style={{
+					borderRadius: 5,
+					background: "#fff",
+					boxShadow: "5px 5px 15px 5px rgba(0,0,0,0.10)",
+				}}
 			>
 				{data.product === undefined
 					? null

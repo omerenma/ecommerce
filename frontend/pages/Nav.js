@@ -12,17 +12,26 @@ import {
 } from "react-bootstrap";
 import Search from "./Search";
 import Login from "./Login";
+import Register from "./Register";
 
 const Navs = (props) => {
 	const [open, setOpen] = useState(false);
+	const [openRegister, setOpenRegister] = useState(false)
+	const [loginData, setLoginData] = useState("");
 
 	const handleOpen = () => {
 		setOpen(true);
 	};
+	const handleCloseRegister = () => {
+		setOpenRegister(false);
+	};
+	
+	const handleOpenRegister = () => {
+		setOpenRegister(true);
+	};
 	const handleClose = () => {
-		setOpen(false)
-	}
-
+		setOpen(false);
+	};
 	return (
 		<>
 			<Navbar className="navbar" expand="lg">
@@ -41,6 +50,15 @@ const Navs = (props) => {
 							navbarScroll
 						>
 							<Nav.Link className="nav_link">
+							<Button
+									href="#action1"
+									className="nav-link"
+									// aria-describedby={id}
+									type="button"
+									onClick={handleOpenRegister}
+								>
+									Register
+								</Button>
 								<Button
 									href="#action1"
 									className="nav-link"
@@ -67,9 +85,22 @@ const Navs = (props) => {
 					vertical: "center",
 					horizontal: "center",
 				}}
+				open={openRegister}
+			>
+				<Register handleClose={handleCloseRegister}  />
+			</Popover>
+			<Popover
+				anchorOrigin={{
+					vertical: "top",
+					horizontal: "center",
+				}}
+				transformOrigin={{
+					vertical: "center",
+					horizontal: "center",
+				}}
 				open={open}
 			>
-				<Login handleClose={handleClose} />
+				<Login handleClose={handleClose} loginData={setLoginData} />
 			</Popover>
 		</>
 	);

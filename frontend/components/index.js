@@ -72,12 +72,15 @@ export const TextFieldWithIcon = ({
 		showPassword: false,
 	});
 
-	const [email, setEmail] = useState('')
-	const [password, setPassword] = useState('')
+	
+
 	const handleChange = (props) => (event) => {
 		setValues({ ...values, [props]: event.target.value });
 	};
 
+	const handleSubmit = () => {
+		console.log("submit");
+	};
 	const handleClickShowPassword = () => {
 		setValues({
 			...values,
@@ -89,7 +92,7 @@ export const TextFieldWithIcon = ({
 		event.preventDefault();
 	};
 	return (
-		<>
+		<form>
 			{type === "password" ? (
 				<Input
 					style={{
@@ -103,13 +106,15 @@ export const TextFieldWithIcon = ({
 					type={values.showPassword ? "text" : "password"}
 					value={password}
 					placeholder="Password"
-					onChange={e => setPassword(e.target.password)}
+					onChange={(e) => setPassword(e.target.value)}
+					password={password}
 					endAdornment={
 						<InputAdornment position="end" style={{ background: "#662D9133" }}>
 							<IconButton
 								onClick={handleClickShowPassword}
 								onMouseDown={handleMouseDownPassword}
 								edge="end"
+								style={{ color: "orange" }}
 							>
 								{values.showPassword ? <VisibilityOff /> : <Visibility />}
 							</IconButton>
@@ -179,8 +184,9 @@ export const TextFieldWithIcon = ({
 					disableUnderline={true}
 					type="email"
 					value={email}
+					email={email}
 					onChange={(e) => setEmail(e.target.value)}
-					startAdornment={<EmailSharp style={{ color: color }} />}
+					endAdornment={<EmailSharp style={{ color: color }} />}
 				/>
 			) : (
 				<Input
@@ -209,9 +215,10 @@ export const TextFieldWithIcon = ({
 							</IconButton>
 						</InputAdornment>
 					}
+				
 				/>
 			)}
-		</>
+		</form>
 	);
 };
 

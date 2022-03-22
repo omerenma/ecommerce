@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint"
   },
+  "proxy": "http://localhost:5000/",
   "dependencies": {
     "@emotion/memoize": "^0.7.5",
     "@emotion/react": "^11.8.1",
@@ -26,7 +27,7 @@
     "react-helmet": "^6.1.0",
     "react-icons": "^4.3.1",
     "react-js-pagination": "^3.0.3",
-    "react-loader-spinner": "^6.0.0-0",
+    "react-loader-spinner": "4.0.0",
     "react-paginate": "^8.1.2",
     "react-redux": "^7.2.6",
     "react-router-dom": "^6.2.2",

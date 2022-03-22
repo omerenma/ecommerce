@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "react-loader-spinner";
-import { TextFieldWithIcon } from "../components/index";
 import styled from "styled-components";
 import { Input, InputAdornment, IconButton, TextField } from "@mui/material";
 import {
@@ -13,7 +12,7 @@ import {
 	PersonAdd,
 	EmailSharp,
 } from "@mui/icons-material";
-import { loginAction } from "../redux/loginSlice";
+import { registerAction } from "../redux/registerSlice";
 
 export const Buttons = styled.button`
 	min-width: 297px;
@@ -56,7 +55,7 @@ export const Buttons = styled.button`
 
 export const EmailField = styled(Input)``;
 
-function Login(props) {
+function Register(props) {
 	const dispatch = useDispatch();
 	const { loading } = useSelector((state) => state.login);
 	const [values, setValues] = React.useState({
@@ -68,6 +67,7 @@ function Login(props) {
 	const handleMouseDownPassword = (event) => {
 		event.preventDefault();
 	};
+	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 
@@ -80,40 +80,52 @@ function Login(props) {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		const data = { email, password };
-		dispatch(loginAction(data));
+		const data = {name, email, password };
+		dispatch(registerAction(data));
 	};
 	return (
 		<div style={{ padding: 10 }}>
-			<span style={{ position: "relative", left: 7, top: 10 }}>Login</span>
+			<span style={{ position: "relative", left: 7, top: 10 }}>Register</span>
 			<button
-				cancel
 				onClick={() => props.handleClose()}
 				style={{
 					border: "none",
 					backgroundColor: "#fff",
 					color: "orange",
 					position: "absolute",
-					right: 10,
+					right: 20,
 					top: 17,
 				}}
 			>
 				x
 			</button>
 			<div
-				onSubmit={handleSubmit}
 				style={{
 					display: "flex",
 					flexDirection: "column",
 					width: 300,
-					height: 250,
+					height: 270,
 					justifyItems: "center",
 					alignItems: "center",
 					gap: 10,
 					padding: "0 20px",
 				}}
 			>
-				{/* <TextFieldWithIcon color="orange" type="email" /> */}
+				<Input
+					style={{
+						marginTop: 20,
+						border: "1px solid #662D911F",
+						padding: "0 5px",
+						width: "292px",
+						height: " 35px",
+					}}
+					placeholder="Name"
+					disableUnderline={true}
+					type="text"
+					value={name}
+					onChange={(e) => setName(e.target.value)}
+					endAdornment={<PersonAdd style={{ color: "orange" }} />}
+				/>
 				<Input
 					style={{
 						marginTop: 20,
@@ -130,7 +142,6 @@ function Login(props) {
 					endAdornment={<EmailSharp style={{ color: "orange" }} />}
 				/>
 
-				{/* <TextFieldWithIcon type="password" /> */}
 				<Input
 					style={{
 						marginTop: 20,
@@ -144,7 +155,6 @@ function Login(props) {
 					value={password}
 					placeholder="Password"
 					onChange={(e) => setPassword(e.target.value)}
-					password={password}
 					endAdornment={
 						<InputAdornment position="end" style={{ background: "#662D9133" }}>
 							<IconButton
@@ -169,16 +179,11 @@ function Login(props) {
 					}}
 				>
 					<div style={{ fontSize: "10px" }}>
-						<Link href="/register">
+						<Link href="/login">
 							<a style={{ textDecoration: "none" }}>
 								{" "}
-								Don't have an account? Signup
+								Already have an account? Login
 							</a>
-						</Link>
-					</div>
-					<div style={{ fontSize: "10px" }}>
-						<Link href="/forgot-password">
-							<a style={{ textDecoration: "none" }}> Forgot password?</a>
 						</Link>
 					</div>
 				</div>
@@ -204,4 +209,4 @@ function Login(props) {
 	);
 }
 
-export default Login;
+export default Register;
