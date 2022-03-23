@@ -19,7 +19,7 @@ app.use(bodyParser.json());
 cloudinary.config({
 	cloud_name: process.env.CLOUDINARY_NAME,
 	api_key: process.env.CLOUDINARY_API_KEY,
-	api_secret: CLOUDINARY_API_SCRETE,
+	api_secret: process.env.CLOUDINARY_API_SCRETE,
 });
 
 app.use(cookieParser());
