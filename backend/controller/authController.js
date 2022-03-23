@@ -4,20 +4,27 @@ const catchAsyncError = require("..//middlewares/catchAsyncError");
 const sendToken = require("../utils/jwtToken");
 const sendEmail = require("../utils/sendEmail");
 const crypto = require("crypto");
+const cloudinary = require("cloudinary");
 const { authorizeRoles } = require("../middlewares/auth");
 
 // Register a user => /api/vi/register
 
 exports.registerUser = catchAsyncError(async (req, res, next) => {
+	const result = await cloudinary.v2.uploader.upload(req.body.avatar, {
+		folder: "avatars",
+		width: 150,
+		crop: "scale",
+	});
 	const { name, email, password } = req.body;
+
 	const user = await User.create({
 		name,
 		email,
 		password,
 		// Harde coded avatar
 		avatar: {
-			public_id: "",
-			url: "",
+			public_id: result.public_id,
+			url: result.secure_url,
 		},
 	});
 
@@ -61,8 +68,11 @@ exports.forgotPassword = catchAsyncError(async (req, res, next) => {
 
 // Login a user => /api/vi/login
 exports.loginUser = catchAsyncError(async (req, res, next) => {
+	if (!req.body) {
+		console.log("No body");
+	}
+	console.log(req.body, "body");
 	const { email, password } = req.body;
-
 	// ckeck if email and password is entered by user
 	if (!email || !password) {
 		return next(new ErrorHandler("Please enter email and password", 400));
@@ -180,24 +190,26 @@ exports.allUsers = catchAsyncError(async (req, res, next) => {
 });
 
 // Get specific user details => /api/v1
-exports.getUserDetails = catchAsyncError(async(req, res,next) => {
-	const user = await User.findById(req.params.id)
-	if(!user){
-		return next(new ErrorHandler(`User not found with this id: ${req.params.id}`, 404))
+exports.getUserDetails = catchAsyncError(async (req, res, next) => {
+	const user = await User.findById(req.params.id);
+	if (!user) {
+		return next(
+			new ErrorHandler(`User not found with this id: ${req.params.id}`, 404)
+		);
 	}
 
 	res.status(200).json({
-		success:true,
-		user
-	})
-})
+		success: true,
+		user,
+	});
+});
 
 // Admin update user profile => /api/v1/admin/user/:id
-exports.updateUser= catchAsyncError(async (req, res, next) => {
+exports.updateUser = catchAsyncError(async (req, res, next) => {
 	const newUserData = {
 		name: req.body.name,
 		email: req.body.email,
-		role:req.body.role
+		role: req.body.role,
 	};
 
 	const user = await User.findByIdAndUpdate(req.params.id, newUserData, {
@@ -211,16 +223,15 @@ exports.updateUser= catchAsyncError(async (req, res, next) => {
 });
 
 // Delete user => /api/v1/admin/user/:id
-exports.deleteUser = catchAsyncError(async(req, res, next) => {
-	const user = await User.findById(req.params.id)
-	if(!user){
-		return next(new ErrorHandler('Not found', 404))
+exports.deleteUser = catchAsyncError(async (req, res, next) => {
+	const user = await User.findById(req.params.id);
+	if (!user) {
+		return next(new ErrorHandler("Not found", 404));
 	}
 	// Remove avatar from cloudinary - TODO
-	await user.remove()
+	await user.remove();
 	res.status(200).json({
-		success:true,
-		user
-	})
-
-})
+		success: true,
+		user,
+	});
+});
