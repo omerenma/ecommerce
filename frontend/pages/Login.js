@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
+import { useAlert } from "react-alert";
 import Loader from "react-loader-spinner";
-import { TextFieldWithIcon } from "../components/index";
 import styled from "styled-components";
 import { Input, InputAdornment, IconButton, TextField } from "@mui/material";
 import {
@@ -57,8 +57,10 @@ export const Buttons = styled.button`
 export const EmailField = styled(Input)``;
 
 function Login(props) {
+	console.log(props, "i want to route");
 	const dispatch = useDispatch();
-	const { loading } = useSelector((state) => state.login);
+	const alert = useAlert();
+	const { loading, error, success } = useSelector((state) => state.login);
 	const [values, setValues] = React.useState({
 		email: "",
 		password: "",
@@ -68,6 +70,12 @@ function Login(props) {
 	const handleMouseDownPassword = (event) => {
 		event.preventDefault();
 	};
+
+	// const [data, setData] = useState({
+	// 	email: "",
+	// 	password: "",
+	// });
+
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 
@@ -80,9 +88,24 @@ function Login(props) {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		const data = { email, password };
+		const data = {
+			email,
+			password,
+		};
+
 		dispatch(loginAction(data));
+		if (!data) {
+			return alert.error("All fields required");
+		}
+		if (error) {
+			return alert.error("Invalid email or password");
+		}
+		if (success) {
+			// TODO: Redirect to protected page
+			props.route.router.push("/Home");
+		}
 	};
+
 	return (
 		<div style={{ padding: 10 }}>
 			<span style={{ position: "relative", left: 7, top: 10 }}>Login</span>
@@ -101,7 +124,6 @@ function Login(props) {
 				x
 			</button>
 			<div
-				onSubmit={handleSubmit}
 				style={{
 					display: "flex",
 					flexDirection: "column",
@@ -113,7 +135,6 @@ function Login(props) {
 					padding: "0 20px",
 				}}
 			>
-				{/* <TextFieldWithIcon color="orange" type="email" /> */}
 				<Input
 					style={{
 						marginTop: 20,
@@ -130,7 +151,6 @@ function Login(props) {
 					endAdornment={<EmailSharp style={{ color: "orange" }} />}
 				/>
 
-				{/* <TextFieldWithIcon type="password" /> */}
 				<Input
 					style={{
 						marginTop: 20,
@@ -144,7 +164,6 @@ function Login(props) {
 					value={password}
 					placeholder="Password"
 					onChange={(e) => setPassword(e.target.value)}
-					password={password}
 					endAdornment={
 						<InputAdornment position="end" style={{ background: "#662D9133" }}>
 							<IconButton
@@ -195,7 +214,7 @@ function Login(props) {
 						{loading === true ? (
 							<Loader type="Circles" height={20} width={20} color="orange" />
 						) : (
-							"Submit"
+							"Login"
 						)}
 					</Buttons>
 				</div>

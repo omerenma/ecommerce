@@ -25,6 +25,7 @@ const Home = () => {
 	const dispatch = useDispatch();
 	const { loading, success, error, data, rowsPerPage, productCount, count } =
 		useSelector((state) => state.products);
+	const { user, isAuthenticated } = useSelector((state) => state.login);
 
 	useEffect(() => {
 		dispatch(getProducts(currentPage));
@@ -61,9 +62,9 @@ const Home = () => {
 					display: "flex",
 					justifyContent: "center",
 					alignItems: "center",
-					position:'absolute',
-					left:'50%',
-					top:'50%'
+					position: "absolute",
+					left: "50%",
+					top: "50%",
 				}}
 			>
 				<Loader type="Circles" height={30} width={30} color="orange" />
@@ -107,40 +108,6 @@ const Home = () => {
 					onRowsPerPageChange={handleChangeRowsPerPage}
 				/>
 			</div>
-			{/* <div style={{ display: "flex", justifyContent: "center", marginTop: 10 }}>
-				<Pagination
-					activePage={currentPage}
-					itemsCountPerPage={rowsPerPage}
-					totalItemsCount={productCount}
-					onChange={setCurrentPageNo}
-					nextPageText={"Next"}
-					prevPageText={"Prev"}
-					firstPageText={"First"}
-					lastPageText={"Last"}
-					itemClass="page-item"
-					linkClass="page-link"
-				/>
-			</div> */}
-			{/* <Paginate
-				nextLabel="next >"
-				onPageChange={setCurrentPageNo}
-				pageRangeDisplayed={rowsPerPage}
-				marginPagesDisplayed={2}
-				pageCount={productCount}
-				previousLabel="< previous"
-				pageClassName="page-item"
-				pageLinkClassName="page-link"
-				previousClassName="page-item"
-				previousLinkClassName="page-link"
-				nextClassName="page-item"
-				nextLinkClassName="page-link"
-				breakLabel="..."
-				breakClassName="page-item"
-				breakLinkClassName="page-link"
-				containerClassName="pagination"
-				activeClassName="active"
-				renderOnZeroPageCount={null}
-			/> */}
 		</>
 	);
 };

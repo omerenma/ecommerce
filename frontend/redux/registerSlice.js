@@ -1,10 +1,28 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-export const registerAction = createAsyncThunk("login/user", async (data) => {
-	const res = await axios.post("http://localhost:5000/api/v1/auth/register", data);
-	return res.data;
-});
+export const registerAction = createAsyncThunk(
+	"register/user",
+	async (data) => {
+		const res = await axios.post(
+			"http://localhost:5000/api/v1/auth/register",
+			data
+			// {
+			// 	headers: {
+			// 		"Content-Type": "multipart/form-data",
+			// 	},
+			// }
+		);
+		//{
+		// method: "POST",
+		// headers: {
+		// 	"Content-Type": "multipart/form-data",
+		// },
+		// 	body: JSON.stringify(data),
+		// });
+		return res.data;
+	}
+);
 
 const registerSlice = createSlice({
 	name: "register/user",
