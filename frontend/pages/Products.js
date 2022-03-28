@@ -60,7 +60,7 @@ const Products = ({ product }) => {
 			</Card.Body>
 
 			<Link className={style.btn} href={`/products/${product._id}`}>
-				<a className={style.btn}>View Details</a>
+				<a className={style.btn}>View More</a>
 			</Link>
 		</Card>
 	);

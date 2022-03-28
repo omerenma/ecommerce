@@ -82,7 +82,7 @@ const Navs = (props) => {
 										color: "#fff",
 									}}
 								>
-									<Avatar />
+									<Avatar src={user.user.avatar.url} />
 									<span style={{ position: "relative", top: 5 }}>
 										{user && user.user.name}
 									</span>

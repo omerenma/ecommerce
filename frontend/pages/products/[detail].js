@@ -87,7 +87,6 @@ const ProductDetails = () => {
 	const handleClose = () => {
 		setAnchorEl(null);
 	};
-	console.log(data, "data");
 	const open = Boolean(anchorEl);
 	const id = open ? "simple-popover" : undefined;
 	if (loading === true) {

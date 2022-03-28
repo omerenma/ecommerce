@@ -4,22 +4,14 @@ import axios from "axios";
 export const registerAction = createAsyncThunk(
 	"register/user",
 	async (data) => {
-		const res = await axios.post(
-			"http://localhost:5000/api/v1/auth/register",
-			data
-			// {
-			// 	headers: {
-			// 		"Content-Type": "multipart/form-data",
-			// 	},
-			// }
-		);
-		//{
-		// method: "POST",
-		// headers: {
-		// 	"Content-Type": "multipart/form-data",
-		// },
-		// 	body: JSON.stringify(data),
-		// });
+		const res = await fetch("http://localhost:5000/api/v1/auth/register", {
+			method: "POST",
+			body: JSON.stringify(data),
+			headers: {
+				"Content-Type": "application/json",
+			},
+		});
+
 		return res.data;
 	}
 );

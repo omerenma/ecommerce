@@ -113,7 +113,7 @@ function Register(props) {
 			name: name,
 			email: email,
 			password: password,
-			//avatar:avatar
+			avatar:avatar
 		};
 
 		dispatch(registerAction(data));

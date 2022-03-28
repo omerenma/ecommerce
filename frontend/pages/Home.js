@@ -37,10 +37,7 @@ const Home = () => {
 		}
 	}, [dispatch, success, error, currentPage, productCount]);
 
-	// function setCurrentPageNo() {
-	// 	setCurrentPage(currentPage + 1);
-	// }
-
+	
 	const handleChangePage = (event, newPage) => {
 		setCurrentPage(newPage);
 	};
@@ -50,10 +47,6 @@ const Home = () => {
 		setCurrentPage(0);
 	};
 
-	// const handlePageClick = (event) => {
-	// 	const newOffset = (event.selected * rowsPerPage) % data.length;
-	// 	setCurrentPage(newOffset);
-	// };
 
 	if (loading === true) {
 		return (
