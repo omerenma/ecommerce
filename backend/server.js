@@ -2,8 +2,16 @@ const express = require("express");
 const path = require("path");
 const app = require("./app");
 const db = require("./config/database");
+const cloudinary = require("cloudinary").v2;
+require('dotenv').config()
 
-const dotenv = require("dotenv");
+//dotenv.config({path:'./config/confog.env'})
+cloudinary.config({
+	cloud_name: process.env.CLOUDINARY_NAME,
+	api_key: process.env.API_KEY,
+	api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
 // Handle Uncaught execptional error
 process.on("uncaughtException", (err) => {
 	console.log(err.message);
@@ -13,7 +21,7 @@ process.on("uncaughtException", (err) => {
 });
 
 // Setup config
-dotenv.config({ path: "./config/config.env" });
+//dotenv.config({ path: "./config/config.env" });
 
 app.use(express.static(path.join(__dirname, "public")));
 // connect to database

@@ -10,18 +10,22 @@ const { authorizeRoles } = require("../middlewares/auth");
 // Register a user => /api/vi/register
 
 exports.registerUser = catchAsyncError(async (req, res, next) => {
+	const { name, email, password } = req.body;
 	const result = await cloudinary.v2.uploader.upload(req.body.avatar, {
 		folder: "avatars",
 		width: 150,
 		crop: "scale",
 	});
-	const { name, email, password } = req.body;
+	console.log(result, "resu;;;ts");
+
+	if (!name || !email || !password) {
+		return next(new ErrorHandler("All fields required", 400));
+	}
 
 	const user = await User.create({
 		name,
 		email,
 		password,
-		// Harde coded avatar
 		avatar: {
 			public_id: result.public_id,
 			url: result.secure_url,
@@ -69,9 +73,7 @@ exports.forgotPassword = catchAsyncError(async (req, res, next) => {
 // Login a user => /api/vi/login
 exports.loginUser = catchAsyncError(async (req, res, next) => {
 	if (!req.body) {
-		console.log("No body");
 	}
-	console.log(req.body, "body");
 	const { email, password } = req.body;
 	// ckeck if email and password is entered by user
 	if (!email || !password) {
